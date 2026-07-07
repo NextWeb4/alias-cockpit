@@ -17,6 +17,7 @@ Date: 2026-07-07
 ## Scope
 
 - Directly reused: local Git, existing `.gitignore`, existing `scripts\verify-release.ps1`, and existing release artifacts in `artifacts/`.
+- Added: `scripts\publish-github-release.ps1` to create/use the GitHub repo, push `main`, create/update `v1.0.0`, and upload release assets once a GitHub token is available.
 - New repository target: `NextWeb4/alias-cockpit`.
 - Release target: `v1.0.0`.
 - Release assets:
@@ -39,11 +40,9 @@ Date: 2026-07-07
 ## Verification Plan
 
 - Run `git status --short` before commit to confirm ignored generated files are not staged.
-- Push `main` to `origin`.
-- Create GitHub Release `v1.0.0`.
-- Upload the three release assets.
+- Run `scripts\publish-github-release.ps1` to push `main`, create GitHub Release `v1.0.0`, and upload the three release assets.
 - Verify remote repository, latest release, and release asset list through GitHub API.
 
 ## Current Blocker
 
-GitHub CLI is not installed on this machine, so GitHub operations use the project GitHub skill and REST API. At the time of this audit, the local GitHub integration token helper returned `ERROR: Unable to connect to the remote server`; repository creation, push authentication, and release upload require the integration token service to be available.
+GitHub CLI is not installed on this machine, so GitHub operations use the project GitHub skill and REST API. At the time of this audit, the local GitHub integration token helper returned `ERROR: Unable to connect to the remote server`; repository creation, push authentication, and release upload require the integration token service to be available. The local Git repository and first commit can still be prepared without the token.

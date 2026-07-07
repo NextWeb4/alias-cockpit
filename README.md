@@ -18,6 +18,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prune-publish.ps1 -P
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\clean-build-cache.ps1 -Artifacts
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-msi.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-setup-exe.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\publish-github-release.ps1
 ```
 
 The solution is built with the local .NET 10 SDK because `AliasCockpit.slnx` requires the newer SDK, while product projects target .NET 8 for Windows App SDK/WinRT runtime compatibility. The local `.tools\dotnet` runtime set includes .NET 8 and .NET 10.
@@ -65,6 +66,14 @@ artifacts\AliasCockpit-win-x64-setup.exe
 ```
 
 This EXE is a WiX Burn installer that embeds `artifacts\AliasCockpit-win-x64.msi`. It is the EXE installer package to distribute; do not substitute the folder-publish `AliasCockpit.App.exe` or a shortcut for this artifact. Release verification extracts the setup EXE and checks that the embedded payload matches the MSI size.
+
+GitHub release publishing target:
+
+```text
+https://github.com/NextWeb4/alias-cockpit
+```
+
+`scripts\publish-github-release.ps1` creates/uses that repository, pushes `main`, creates/updates tag release `v1.0.0`, and uploads the setup EXE, MSI, and portable zip. It expects `GITHUB_TOKEN`, `GH_TOKEN`, or the Codex GitHub integration token helper to be available at runtime; the token is not stored in this repository.
 
 ## Creator
 

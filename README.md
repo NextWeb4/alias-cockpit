@@ -1,5 +1,7 @@
 # Alias Cockpit
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 Windows local email alias cockpit for generating, managing, syncing, importing, and exporting email aliases.
 
 Current status: research-backed WinUI/.NET skeleton with a local Gmail/Outlook email alias expander as the main screen, saved input email history, per-alias site/purpose/color markers, marked/unmarked alias filtering, clickable creator links, hard-coded creator information, core alias generation, provider capability/account modeling, CSV import/export dry-run, local SQLite persistence, SQLite audit/tombstone persistence, Windows Credential Manager secret storage, SimpleLogin/addy.io mock provider adapters, SimpleLogin/addy.io HTTP adapter foundations, MSI/setup EXE packaging, unit/stress/infrastructure tests, and a benchmark entrypoint. Encrypted sync, advanced provider sync, and full UI automation are not complete yet.

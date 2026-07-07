@@ -36,7 +36,7 @@
 - 当前 EXE 安装包位于 `artifacts\AliasCockpit-win-x64-setup.exe`；它必须由 `scripts\package-setup-exe.ps1` 生成，是内嵌 MSI 的 WiX Burn 安装器，不得把 `publish\AliasCockpit.App.exe`、快捷方式或 zip 内 app exe 当成“exe 安装包”交付。
 - MSI 和 setup EXE 的安装入口必须显示 `Assets\AppIcon.ico`；`package-msi.ps1` 负责 Start Menu shortcut / ARPPRODUCTICON，`package-setup-exe.ps1` 负责 Burn `IconSourceFile`。
 - GitHub Release 附件必须上传 `artifacts\AliasCockpit-win-x64-setup.exe`、`artifacts\AliasCockpit-win-x64.msi` 和 `artifacts\AliasCockpit-win-x64-portable.zip`；这些构建产物不得提交进 Git 历史。
-- GitHub 发布脚本为 `scripts\publish-github-release.ps1`；它必须通过 `GITHUB_TOKEN`、`GH_TOKEN` 或 Codex GitHub 集成 token helper 临时取 token，不得把 token 写入文件、Git remote 或日志。
+- GitHub 发布脚本为 `scripts\publish-github-release.ps1`；它必须通过 `GITHUB_TOKEN`、`GH_TOKEN`、Git Credential Manager 或 Codex GitHub 集成 token helper 临时取 token，不得把 token 写入文件、Git remote 或日志。
 - 发布目录瘦身使用 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prune-publish.ps1 -PublishDir <publish-dir>`；该脚本只允许删除已审计的未用 WinAppSDK AI/WebView/Widgets/Workloads/诊断文件，执行后必须重新通过 publish 启动冒烟和 UI smoke。
 - 不得删除 `Microsoft.InteractiveExperiences.Projection.dll`；实测删除后 WinUI 发布程序启动失败。
 - MSI 构建工具固定为 WiX CLI `5.0.2`，通过 `.\.tools\dotnet\dotnet.exe tool install wix --version 5.0.2 --tool-path .tools\wix` 恢复到 `.tools\wix`；它是构建工具，不得作为产品运行依赖加入 App/Core/Infrastructure。

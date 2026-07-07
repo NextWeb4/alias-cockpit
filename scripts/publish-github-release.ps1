@@ -36,16 +36,59 @@ function Get-GitHubToken {
         }
     }
 
-    if ([string]::IsNullOrWhiteSpace($TokenScript) -or -not (Test-Path -LiteralPath $TokenScript)) {
-        throw "No GitHub token source found. Set GITHUB_TOKEN or pass -TokenScript."
+    if (-not [string]::IsNullOrWhiteSpace($TokenScript) -and (Test-Path -LiteralPath $TokenScript)) {
+        $token = & $TokenScript 2>$null
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($token) -and $token -notlike "ERROR*") {
+            return $token
+        }
     }
 
-    $token = & $TokenScript
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($token) -or $token -like "ERROR*") {
-        throw "GitHub token unavailable. Complete GitHub authorization in the app integration panel and retry."
+    $credentialToken = Get-GitCredentialManagerToken
+    if (-not [string]::IsNullOrWhiteSpace($credentialToken)) {
+        return $credentialToken
+    }
+
+    throw "GitHub token unavailable. Set GITHUB_TOKEN, sign in through Git Credential Manager, or complete GitHub authorization in the app integration panel and retry."
+}
+
+function Get-GitCredentialManagerToken {
+    try {
+        $credential = @"
+protocol=https
+host=github.com
+
+"@ | git credential fill
+    }
+    catch {
+        return $null
+    }
+
+    if ($LASTEXITCODE -ne 0 -or $null -eq $credential) {
+        return $null
+    }
+
+    $passwordLine = $credential | Where-Object { $_ -like "password=*" } | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($passwordLine)) {
+        return $null
+    }
+
+    $token = $passwordLine.Substring("password=".Length)
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        return $null
     }
 
     return $token
+}
+
+function Get-GitBasicAuthorizationHeader {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Token
+    )
+
+    $pair = "x-access-token:$Token"
+    $basic = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair))
+    return "Authorization: Basic $basic"
 }
 
 function Invoke-GitHubJson {
@@ -225,7 +268,8 @@ elseif ($existingRemote -ne $remoteUrl) {
     & git remote set-url $RemoteName $remoteUrl
 }
 
-& git -c http.extraHeader="Authorization: Bearer $script:GitHubToken" push -u $RemoteName $Branch
+$gitAuthHeader = Get-GitBasicAuthorizationHeader -Token $script:GitHubToken
+& git -c "http.https://github.com/.extraHeader=$gitAuthHeader" push -u $RemoteName $Branch
 if ($LASTEXITCODE -ne 0) {
     throw "git push failed."
 }

@@ -73,7 +73,7 @@ GitHub release publishing target:
 https://github.com/NextWeb4/alias-cockpit
 ```
 
-`scripts\publish-github-release.ps1` creates/uses that repository, pushes `main`, creates/updates tag release `v1.0.0`, and uploads the setup EXE, MSI, and portable zip. It expects `GITHUB_TOKEN`, `GH_TOKEN`, or the Codex GitHub integration token helper to be available at runtime; the token is not stored in this repository.
+`scripts\publish-github-release.ps1` creates/uses that repository, pushes `main`, creates/updates tag release `v1.0.0`, and uploads the setup EXE, MSI, and portable zip. It expects `GITHUB_TOKEN`, `GH_TOKEN`, Git Credential Manager, or the Codex GitHub integration token helper to be available at runtime; the token is not stored in this repository.
 
 ## Creator
 

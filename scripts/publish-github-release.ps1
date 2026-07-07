@@ -36,6 +36,11 @@ function Get-GitHubToken {
         }
     }
 
+    $credentialToken = Get-GitCredentialManagerToken
+    if (-not [string]::IsNullOrWhiteSpace($credentialToken)) {
+        return $credentialToken
+    }
+
     if (-not [string]::IsNullOrWhiteSpace($TokenScript) -and (Test-Path -LiteralPath $TokenScript)) {
         $token = & $TokenScript 2>$null
         if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($token) -and $token -notlike "ERROR*") {
@@ -43,21 +48,13 @@ function Get-GitHubToken {
         }
     }
 
-    $credentialToken = Get-GitCredentialManagerToken
-    if (-not [string]::IsNullOrWhiteSpace($credentialToken)) {
-        return $credentialToken
-    }
-
     throw "GitHub token unavailable. Set GITHUB_TOKEN, sign in through Git Credential Manager, or complete GitHub authorization in the app integration panel and retry."
 }
 
 function Get-GitCredentialManagerToken {
     try {
-        $credential = @"
-protocol=https
-host=github.com
-
-"@ | git credential fill
+        $credentialInput = "protocol=https`nhost=github.com`n`n"
+        $credential = $credentialInput | git credential fill 2>$null
     }
     catch {
         return $null

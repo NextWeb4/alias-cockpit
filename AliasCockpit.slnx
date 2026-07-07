@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/AliasCockpit.Benchmarks/AliasCockpit.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AliasCockpit.App/AliasCockpit.App.csproj" />
+    <Project Path="src/AliasCockpit.Core/AliasCockpit.Core.csproj" />
+    <Project Path="src/AliasCockpit.Infrastructure/AliasCockpit.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AliasCockpit.App.Tests/AliasCockpit.App.Tests.csproj" />
+    <Project Path="tests/AliasCockpit.Core.Tests/AliasCockpit.Core.Tests.csproj" />
+    <Project Path="tests/AliasCockpit.Infrastructure.Tests/AliasCockpit.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

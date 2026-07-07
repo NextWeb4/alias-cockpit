@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AliasCockpit.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AliasCockpit.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

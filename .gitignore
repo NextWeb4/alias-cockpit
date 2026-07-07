@@ -1,0 +1,22 @@
+# Local toolchain and downloads
+.tools/
+.scratch/
+
+# Build outputs
+bin/
+obj/
+out/
+artifacts/
+
+# User/local data
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.enc
+
+# Editor/OS noise
+.vs/
+.vscode/
+Thumbs.db
+Desktop.ini

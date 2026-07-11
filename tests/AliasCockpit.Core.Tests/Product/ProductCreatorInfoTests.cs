@@ -7,7 +7,7 @@ public sealed class ProductCreatorInfoTests
     [Fact]
     public void CreatorInfoIsHardCoded()
     {
-        Assert.Equal("HaoXiang Hwang", ProductCreatorInfo.Name);
+        Assert.Equal("HaoXiang Huang", ProductCreatorInfo.Name);
         Assert.Equal("https://nextweb4.github.io/", ProductCreatorInfo.Website);
         Assert.Equal("didadida1688@gmail.com", ProductCreatorInfo.Email);
         Assert.Contains(ProductCreatorInfo.Name, ProductCreatorInfo.DisplayText, StringComparison.Ordinal);

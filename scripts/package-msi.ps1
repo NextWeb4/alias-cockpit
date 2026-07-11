@@ -3,7 +3,7 @@ param(
     [string]$OutputPath,
     [string]$Version = "1.0.0",
     [string]$ProductName = "Alias Cockpit",
-    [string]$Manufacturer = "HaoXiang Hwang",
+    [string]$Manufacturer = "HaoXiang Huang",
     [string]$CreatorWebsite = "https://nextweb4.github.io/",
     [string]$CreatorEmail = "didadida1688@gmail.com",
     [switch]$KeepWork,

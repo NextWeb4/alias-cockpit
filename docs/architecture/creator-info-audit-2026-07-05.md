@@ -5,7 +5,7 @@ Date: 2026-07-05
 ## Requirement
 
 - Hard-code creator information:
-  - Name: `HaoXiang Hwang`
+  - Name: `HaoXiang Huang`
   - Website: `https://nextweb4.github.io/`
   - Email: `didadida1688@gmail.com`
 - Creator information must be visible in the app and present in installer metadata.
@@ -33,7 +33,7 @@ Date: 2026-07-05
 - Directly reused: Core static constants and existing App/Core reference.
 - New module: `src/AliasCockpit.Core/Product/ProductCreatorInfo.cs`.
 - UI display: result header and window title use `ProductCreatorInfo`; website and email render as `HyperlinkButton` controls.
-- Installer metadata: MSI/Setup scripts default `Manufacturer` to `HaoXiang Hwang`, MSI writes contact and website ARP properties.
+- Installer metadata: MSI/Setup scripts default `Manufacturer` to `HaoXiang Huang`, MSI writes contact and website ARP properties.
 - Test: `ProductCreatorInfoTests` locks exact hard-coded values.
 
 ## Conflict Check

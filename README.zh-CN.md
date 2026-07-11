@@ -10,7 +10,7 @@ Alias Cockpit 是一个 Windows 本地邮箱别名管理工具，用于生成、
 
 作者信息固定写在产品代码、安装器元数据和发布文档中，不从配置文件或环境变量读取：
 
-- 作者：HaoXiang Hwang
+- 作者：HaoXiang Huang
 - 网站：https://nextweb4.github.io/
 - 邮箱：didadida1688@gmail.com
 
@@ -122,3 +122,8 @@ Provider token 应通过 `WindowsCredentialManagerSecretStore` 使用 Windows Cr
 - Setup EXE artifact：通过。
 - UI smoke：通过。
 - Release verification script：`scripts\verify-release.ps1`。
+## License / 许可证
+
+中文：当前未发现 LICENSE 文件。
+
+English: No LICENSE file was detected.

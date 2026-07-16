@@ -1,129 +1,122 @@
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
+
 # Alias Cockpit
 
-[English](README.md) | [中文](README.zh-CN.md)
+一款本地优先的 Windows 桌面邮箱别名工作台，用于生成、标记、保存、导入、导出以及按需同步邮箱别名。
 
-## 简介
+![最近提交](https://img.shields.io/github/last-commit/NextWeb4/alias-cockpit?style=flat-square)
+![仓库大小](https://img.shields.io/github/repo-size/NextWeb4/alias-cockpit?style=flat-square)
+![GitHub 星标](https://img.shields.io/github/stars/NextWeb4/alias-cockpit?style=flat-square)
+![C# 与 .NET 8](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 
-Alias Cockpit 是一个 Windows 本地邮箱别名管理工具，用于生成、管理、同步、导入和导出 Email Alias。当前版本的主界面是本地 Gmail / Outlook 邮箱别名扩展器：输入一个邮箱地址和标签后，可以生成 Gmail 点号别名与 `+tag` 别名，并在本机保存常用输入邮箱、站点用途标记、颜色标记和已标记 / 未标记筛选状态。
+## 当前范围
 
-当前版本已经包含 WinUI 3 / .NET 桌面应用骨架、核心别名生成逻辑、本地 SQLite 持久化、Windows Credential Manager 凭据存储边界、SimpleLogin / addy.io Provider adapter 基础、MSI / EXE 安装包构建、便携版 zip、单元测试、集成测试和发布脚本。加密同步、高级 Provider 同步和完整 UI 自动化仍在后续范围内。
+Alias Cockpit 是一个持续开发中的 WinUI 3/.NET 应用。当前主界面是离线 Gmail/Outlook 邮箱别名扩展器，支持保存输入历史、站点/用途/颜色标记、已标记/未标记筛选和复制操作。仓库还包含：
 
-作者信息固定写在产品代码、安装器元数据和发布文档中，不从配置文件或环境变量读取：
+- 核心别名生成、熵估算、CSV 导入导出 dry-run、审计事件、墓碑记录和 Provider 能力模型；
+- Alias、保存地址、Provider 账号和审计数据的本地 SQLite 仓储；
+- Windows Credential Manager 密钥存储；
+- SimpleLogin 与 addy.io mock adapter，以及 HTTP adapter 基础；
+- xUnit 单元、压力、ViewModel 和基础设施测试；
+- 可重复执行的生成、CSV 与 SQLite Benchmark；
+- 文件夹发布、便携 ZIP、MSI、setup EXE 和 GitHub Release 工具。
 
-- 作者：HaoXiang Huang
-- 网站：https://nextweb4.github.io/
-- 邮箱：didadida1688@gmail.com
+加密同步、高级 Provider 同步和完整 UI 自动化尚未完成。应用正常启动时不会调用真实 Provider API。
 
-应用图标源文件位于 `src\AliasCockpit.App\Assets\AppIcon.ico`。它会通过 `ApplicationIcon` 写入应用 exe，通过 `AppWindow.SetIcon` 用于 WinUI 窗口，并通过 `scripts\package-msi.ps1` 写入 MSI 开始菜单快捷方式和“添加/删除程序”条目。
+## 环境要求
 
-## 常用命令
+- Windows 10 2004（`10.0.19041.0`）或更高版本。
+- 仓库忽略的本地 `.tools\dotnet` 工具链。现有项目文档记录：`.slnx` 由 .NET 10 SDK 编排，产品项目使用 .NET 8 Runtime。
+- 运行 UI 冒烟测试需要桌面会话。
+
+## 运行
+
+```powershell
+.\.tools\dotnet\dotnet.exe run --project src\AliasCockpit.App\AliasCockpit.App.csproj
+```
+
+应用在以下位置读写本地元数据：
+
+```text
+%LocalAppData%\AliasCockpit\aliases.sqlite
+```
+
+该开发数据库目前未加密。它可以保存 Alias 元数据、输入邮箱历史、标记、审计数据和 Provider `secret_ref`，但不得保存 Provider Token 或 API Secret。
+
+## 构建、测试与格式检查
 
 ```powershell
 .\.tools\dotnet\dotnet.exe build AliasCockpit.slnx -v minimal
 .\.tools\dotnet\dotnet.exe test AliasCockpit.slnx -v minimal
 .\.tools\dotnet\dotnet.exe run --project benchmarks\AliasCockpit.Benchmarks\AliasCockpit.Benchmarks.csproj -c Release
 .\.tools\dotnet\dotnet.exe format AliasCockpit.slnx --verify-no-changes --verbosity minimal
-.\.tools\dotnet\dotnet.exe publish src\AliasCockpit.App\AliasCockpit.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -v minimal
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prune-publish.ps1 -PublishDir src\AliasCockpit.App\bin\Release\net8.0-windows10.0.26100.0\win-x64\publish
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\clean-build-cache.ps1 -Artifacts
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-msi.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-setup-exe.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\publish-github-release.ps1
 ```
 
-完整发布验证会执行发布目录裁剪、便携版 zip 重建、MSI 重建与校验、setup EXE 重建与抽取检查、zip 内容检查、进程启动冒烟测试，以及基础 UI 冒烟测试：
+仓库文档指出 `dotnet format` 可能出现非阻塞的 workspace-load warning；应结合退出码以及 build/test 结果判断门禁。
+
+## 发布打包
+
+准备交付文件时运行完整发布验证：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\verify-release.ps1
 ```
 
-桌面应用运行候选命令：
+该脚本会执行构建、测试、Benchmark 和格式门禁，发布应用，裁剪已经审计的未使用 WinAppSDK 文件，重建便携 ZIP、MSI 和 setup EXE，校验包内容，对发布版与便携版 EXE 做启动冒烟，并运行基础 UI 冒烟测试。
+
+也可以分别执行：
 
 ```powershell
-.\.tools\dotnet\dotnet.exe run --project src\AliasCockpit.App\AliasCockpit.App.csproj
+.\.tools\dotnet\dotnet.exe publish src\AliasCockpit.App\AliasCockpit.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -v minimal
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prune-publish.ps1 -PublishDir src\AliasCockpit.App\bin\Release\net8.0-windows10.0.26100.0\win-x64\publish
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-msi.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-setup-exe.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\publish-github-release.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\clean-build-cache.ps1 -Artifacts
 ```
 
-## 发布产物
+预期产物：
 
-发布后的 x64 应用 exe 位于：
+| 产物 | 用途 |
+| --- | --- |
+| `src\AliasCockpit.App\bin\Release\net8.0-windows10.0.26100.0\win-x64\publish\AliasCockpit.App.exe` | 完整文件夹发布中的应用 EXE，不是安装包或单文件包 |
+| `artifacts\AliasCockpit-win-x64-portable.zip` | 包含完整发布目录的便携包 |
+| `artifacts\AliasCockpit-win-x64.msi` | WiX 生成的每机安装 MSI，安装可能需要提权 |
+| `artifacts\AliasCockpit-win-x64-setup.exe` | 内嵌 MSI 的 WiX Burn 安装器 |
 
-```text
-src\AliasCockpit.App\bin\Release\net8.0-windows10.0.26100.0\win-x64\publish\AliasCockpit.App.exe
-```
-
-这个 exe 是文件夹发布目录里的应用程序本体，不是安装包，也不是单文件包。运行它时必须保留同目录的 WinUI / .NET 运行时文件。
-
-便携版：
-
-```text
-artifacts\AliasCockpit-win-x64-portable.zip
-```
-
-MSI 安装包：
-
-```text
-artifacts\AliasCockpit-win-x64.msi
-```
-
-EXE 安装包：
-
-```text
-artifacts\AliasCockpit-win-x64-setup.exe
-```
-
-这个 EXE 是 WiX Burn 安装器，内部嵌入 MSI。对外分发时应使用这个 setup EXE，不要把发布目录里的 `AliasCockpit.App.exe` 或快捷方式当成安装包。
-
-GitHub Release 发布目标：
-
-```text
-https://github.com/NextWeb4/alias-cockpit
-```
-
-`scripts\publish-github-release.ps1` 会创建 / 使用该仓库，推送 `main`，创建或更新 `v1.0.0` Release，并上传 setup EXE、MSI 和便携版 zip。Token 只在运行时通过 `GITHUB_TOKEN`、`GH_TOKEN`、Git Credential Manager 或 Codex GitHub 集成 helper 临时读取，不写入仓库。
+发布后的 EXE 必须与相邻 WinUI/.NET Runtime 文件一起保留。WiX 仅用于构建。`scripts\publish-github-release.ps1` 以 `NextWeb4/alias-cockpit` 和 `v1.0.0` 为目标，仅在运行时从 `GITHUB_TOKEN`、`GH_TOKEN`、Git Credential Manager 或 Codex 集成 helper 读取凭据。
 
 ## 项目结构
 
-- `src/AliasCockpit.App`：WinUI 3 Windows 桌面应用壳，当前主界面是本地 Email Alias Expander。
-- `src/AliasCockpit.Core`：不依赖 UI 的领域逻辑、邮箱别名生成、审计模型和 Provider 抽象。
-- `src/AliasCockpit.Infrastructure`：SQLite 持久化与基础设施适配器。
-- `tests/AliasCockpit.App.Tests`：App / ViewModel 单元测试。
-- `tests/AliasCockpit.Core.Tests`：核心逻辑单元测试和压力测试。
-- `tests/AliasCockpit.Infrastructure.Tests`：SQLite / Credential Manager / Provider adapter 集成测试。
-- `benchmarks/AliasCockpit.Benchmarks`：基础性能测量入口。
-- `docs`：调研、架构、安全和发布决策文档。
+| 路径 | 职责 |
+| --- | --- |
+| `src/AliasCockpit.App/` | WinUI 3 应用壳、主页面、ViewModel、剪贴板和桌面集成 |
+| `src/AliasCockpit.Core/` | 不依赖 UI 的别名、生成、CSV、审计、Provider、Secret、安全和扩展器契约 |
+| `src/AliasCockpit.Infrastructure/` | SQLite、Windows Credential Manager 和 Provider Adapter |
+| `tests/AliasCockpit.App.Tests/` | 不启动 WinUI 窗口的 ViewModel 测试 |
+| `tests/AliasCockpit.Core.Tests/` | 领域行为的单元与压力测试 |
+| `tests/AliasCockpit.Infrastructure.Tests/` | SQLite、凭据存储和 Provider Adapter 集成测试 |
+| `benchmarks/AliasCockpit.Benchmarks/` | 生成、CSV dry-run 与 SQLite 基线 |
+| `docs/` | 调研、架构决策、安全模型和发布说明 |
+| `scripts/` | 品牌、发布、打包、清理、Release 与冒烟测试自动化 |
 
-## 本地数据
+## 数据与安全边界
 
-当前 Email Alias Expander 只在本地生成结果，并读写本机 SQLite 元数据：
+- Gmail 点号别名仅适用于 Gmail/Googlemail 地址，不应默认套用于 Google Workspace 自定义域。
+- 并非所有第三方表单都接受 `+tag` 别名。
+- Provider Token 必须由 `WindowsCredentialManagerSecretStore` 保存；SQLite 只保存 Secret Key 模型生成的引用。
+- 不要在站点、用途、标签、标记或保存地址字段写入密码、Token、恢复码或其他敏感信息。
+- 批量禁用/删除 Provider Alias 前必须先生成计划；删除还需要明确确认和审计记录。
+- HTTP Adapter 被显式调用时可以验证 Key 并执行支持的 Alias 操作，但 mock adapter 和 fake HTTP handler 不能证明真实账号端到端可用。
 
-- 保存过的输入邮箱地址；
-- 生成 alias 的站点、用途、颜色等标记。
+## 作者
 
-SQLite 数据库路径：
+- HaoXiang Huang
+- [didadida1688@gmail.com](mailto:didadida1688@gmail.com)
+- <https://nextweb4.github.io/>
 
-```text
-%LocalAppData%\AliasCockpit\aliases.sqlite
-```
+图标源文件为 `src/AliasCockpit.App/Assets/AppIcon.ico`；应用 EXE、WinUI 窗口、开始菜单快捷方式、“添加/删除程序”条目和 setup bundle 都会使用它。
 
-该开发库目前尚未加密。Provider token 和 secret 不存入 SQLite；不要把 API token、密码、恢复密钥或其他敏感信息写入站点、用途、标签等标记字段。
+## 许可证
 
-Provider token 应通过 `WindowsCredentialManagerSecretStore` 使用 Windows Credential Manager 保存；SQLite 只保存后续的 `secret_ref`。
-
-## 当前门禁
-
-- Build：通过。
-- 单元 / 压力 / 集成测试：通过。
-- Benchmark：通过。
-- Format check：通过，可能有非阻塞 workspace load warning。
-- win-x64 Publish：通过，trimming 关闭以降低 WinUI 发布风险。
-- 启动冒烟测试：通过。
-- Portable artifact：通过。
-- MSI artifact：通过。
-- Setup EXE artifact：通过。
-- UI smoke：通过。
-- Release verification script：`scripts\verify-release.ps1`。
-## License / 许可证
-
-中文：当前未发现 LICENSE 文件。
-
-English: No LICENSE file was detected.
+审计时未在仓库中发现 `LICENSE` 文件。在所有者另行声明授权条款前，不应把该仓库视为已经授予开源许可。

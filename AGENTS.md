@@ -29,7 +29,8 @@
 - Do not enable trimming, remove `Microsoft.InteractiveExperiences.Projection.dll`, change the .NET 8 product targets, or replace the audited WiX 5.0.2 toolchain without rebuilding and launch-testing the complete GUI package.
 
 ## 5. Code style
-
+- Keep the opening centered language badge row byte-for-byte identical across `README.md`, `README.zh-CN.md`, and `README.ja.md`; preserve the Shields URLs and native labels `English`, `简体中文`, and `日本語`.
+- Keep the three README documents in the same section order with matching commands, paths, versions, links, images, numeric facts, and code fences; translate prose and headings naturally.
 - Follow `.editorconfig`, nullable reference types, implicit usings, and the centrally managed package versions in `Directory.Packages.props`.
 - Verify formatting with `.\.tools\dotnet\dotnet.exe format AliasCockpit.slnx --verify-no-changes --verbosity minimal`; automatic formatting uses the same command without `--verify-no-changes`.
 - `Directory.Build.props` uses `LangVersion=latest` and build-time code-style enforcement; preserve it while CommunityToolkit partial-property generation depends on it.
@@ -59,7 +60,8 @@
 - The final report states dependency, license, network-behavior, architecture, and unresolved-risk changes.
 
 ## 9. Review criteria
-
+- Confirm the three opening language badge rows are identical and render the labels inside SVG images rather than browser-translatable text.
+- Compare all three README versions for matching facts, section order, commands, paths, links, images, numbers, and code fences.
 - Review secrets, database encryption status, log redaction, network calls, CSV handling, and provider deletion before cosmetic concerns.
 - Verify App/Core/Infrastructure reference direction and ensure business rules remain directly testable.
 - Check Gmail-only dot behavior, `+tag` limitations, deduplicated expansion results, marked/unmarked accessibility, and provider capability differences.

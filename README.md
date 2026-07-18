@@ -1,4 +1,8 @@
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/English-0969da?style=flat-square" alt="English"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-c8102e?style=flat-square" alt="简体中文"></a>
+  <a href="README.ja.md"><img src="https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-8250df?style=flat-square" alt="日本語"></a>
+</p>
 
 # Alias Cockpit
 
@@ -116,6 +120,13 @@ Keep the published executable beside its WinUI/.NET runtime files. The release s
 - <https://nextweb4.github.io/>
 
 The source icon is `src/AliasCockpit.App/Assets/AppIcon.ico`; packaging also uses it for the executable, WinUI window, Start Menu shortcut, Add/Remove Programs entry, and setup bundle.
+
+## Maintenance and Contributions
+
+- Put domain behavior in `src/AliasCockpit.Core/`, operating-system and provider integrations in `src/AliasCockpit.Infrastructure/`, and presentation work in `src/AliasCockpit.App/`; add coverage in the matching test project.
+- Review the [native UI architecture decision](docs/architecture/adr/0001-windows-native-ui-stack.md), [test strategy](docs/architecture/test-strategy.md), and [threat model](docs/security/threat-model.md) before changing persistence, credentials, provider operations, or release boundaries.
+- Run the build, test, benchmark, and format commands above for normal changes. Packaging changes also require the complete `scripts\verify-release.ps1` path and inspection of every produced artifact.
+- Keep all three README files synchronized when behavior, commands, artifact names, security limits, or licensing changes.
 
 ## License
 

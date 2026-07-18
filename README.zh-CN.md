@@ -1,4 +1,8 @@
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/English-0969da?style=flat-square" alt="English"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-c8102e?style=flat-square" alt="简体中文"></a>
+  <a href="README.ja.md"><img src="https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-8250df?style=flat-square" alt="日本語"></a>
+</p>
 
 # Alias Cockpit
 
@@ -116,6 +120,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\clean-build-cache.ps
 - <https://nextweb4.github.io/>
 
 图标源文件为 `src/AliasCockpit.App/Assets/AppIcon.ico`；应用 EXE、WinUI 窗口、开始菜单快捷方式、“添加/删除程序”条目和 setup bundle 都会使用它。
+
+## 维护与贡献
+
+- 领域行为放在 `src/AliasCockpit.Core/`，操作系统与 Provider 集成放在 `src/AliasCockpit.Infrastructure/`，界面工作放在 `src/AliasCockpit.App/`；同时在对应测试项目补充覆盖。
+- 修改持久化、凭据、Provider 操作或发布边界前，请先阅读[原生 UI 架构决策](docs/architecture/adr/0001-windows-native-ui-stack.md)、[测试策略](docs/architecture/test-strategy.md)和[威胁模型](docs/security/threat-model.md)。
+- 常规修改需要运行上文的构建、测试、Benchmark 和格式命令；打包修改还必须走完 `scripts\verify-release.ps1` 并检查每个产物。
+- 行为、命令、产物名、安全限制或许可发生变化时，必须同步更新三份 README。
 
 ## 许可证
 

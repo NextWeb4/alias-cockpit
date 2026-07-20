@@ -33,6 +33,8 @@ Encrypted sync, advanced provider synchronization, and full UI automation are no
 - The repository's ignored local `.tools\dotnet` installation. Existing project documentation records a .NET 10 SDK for the `.slnx` solution and .NET 8 runtimes for the product projects.
 - A desktop session for the UI smoke test.
 
+The `.tools\dotnet` directory is not part of a clean clone. Provision a compatible SDK/runtime before using the repository-local commands; the snapshot contains no bootstrap installer for that ignored toolchain.
+
 ## Run
 
 ```powershell
@@ -46,6 +48,14 @@ The app reads and writes local metadata at:
 ```
 
 This development database is not encrypted. It may contain alias metadata, saved input addresses, marker values, audit data, and provider `secret_ref` values, but never provider tokens or API secrets.
+
+## Typical Workflow
+
+1. Enter a Gmail or Outlook address, add one tag per line, and choose the number of candidates to generate.
+2. Enable Gmail dot aliases and/or `+tag` aliases when the address and destination form support them. The dot option is disabled for unsupported domains.
+3. Review the result summary, then use the All, dot, plus, marked, or unmarked filters to narrow the list.
+4. Select an alias and save its site, purpose, and color marker. Save an address to the local history when it will be reused.
+5. Copy the selected alias or the filtered result set. Provider operations remain explicit follow-up actions; generating a local alias does not call a provider.
 
 ## Build, Test, and Format
 

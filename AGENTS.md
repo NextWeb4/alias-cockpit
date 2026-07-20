@@ -11,6 +11,7 @@
 ## 2. Run commands
 
 - Verify the local toolchain with `.\.tools\dotnet\dotnet.exe --info` and `.\.tools\dotnet\dotnet.exe --list-runtimes`.
+- `.tools\dotnet` is ignored and absent from a clean clone; document or provision a compatible SDK/runtime before invoking repository-local commands.
 - Run the desktop app with `.\.tools\dotnet\dotnet.exe run --project src\AliasCockpit.App\AliasCockpit.App.csproj`.
 - Startup must remain local and must not invoke real provider HTTP adapters automatically.
 

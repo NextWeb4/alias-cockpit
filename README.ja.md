@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="README.md"><img src="https://img.shields.io/badge/English-0969da?style=flat-square" alt="English"></a>
   <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-c8102e?style=flat-square" alt="简体中文"></a>
@@ -142,3 +141,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\clean-build-cache.ps
 ## ライセンス
 
 監査対象のリポジトリには `LICENSE` ファイルがありませんでした。所有者が別途利用条件を示すまでは、オープンソースライセンスが付与されているものとして扱わないでください。
+
+

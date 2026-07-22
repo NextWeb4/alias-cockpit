@@ -1,3 +1,6 @@
+
+
+
 # Creator Information Audit
 
 Date: 2026-07-05
@@ -7,7 +10,7 @@ Date: 2026-07-05
 - Hard-code creator information:
   - Name: `HaoXiang Huang`
   - Website: `https://nextweb4.github.io/`
-  - Email: `didadida1688@gmail.com`
+  - Email: `Rays688888@Gmail.com`
 - Creator information must be visible in the app and present in installer metadata.
 - Website and email must be clickable in the app; email uses `mailto:`.
 - Do not read creator information from environment variables, local config, SQLite, or network.

@@ -1,3 +1,6 @@
+
+
+
 param(
     [string]$PublishDir,
     [string]$OutputPath,
@@ -5,7 +8,7 @@ param(
     [string]$ProductName = "Alias Cockpit",
     [string]$Manufacturer = "HaoXiang Huang",
     [string]$CreatorWebsite = "https://nextweb4.github.io/",
-    [string]$CreatorEmail = "didadida1688@gmail.com",
+    [string]$CreatorEmail = "Rays688888@Gmail.com",
     [switch]$KeepWork,
     [switch]$NoToolRestore
 )
